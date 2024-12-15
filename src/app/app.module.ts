@@ -6,10 +6,12 @@ import { AppComponent } from './app.component';
 import {AmplifyAuthenticatorModule} from '@aws-amplify/ui-angular';
 import { HelloComponent } from './components/hello/hello.component';
 import { AuthComponent } from './components/auth/auth.component';
+import {BaseComponent} from './components/shared/BaseComponent';
 
 @NgModule({
   declarations: [
     AppComponent,
+    BaseComponent,
     HelloComponent,
     AuthComponent
   ],

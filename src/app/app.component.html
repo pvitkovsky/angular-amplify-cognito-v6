@@ -1,6 +1,13 @@
 <h1>Welcome to Amplify Cognito V2!</h1>
 <router-outlet />
-<div>
-  USER:
-  {{user$ | async | json}}
+<div *ngIf="authenticated$ | async">
+  <div>
+    USER:
+    {{user$ | async | json}}
+  </div>
+  <div>
+    TOKEN:
+    {{token$ | async | json}}
+  </div>
 </div>
+<button (click)="onSignOut()">Sign Out</button>
