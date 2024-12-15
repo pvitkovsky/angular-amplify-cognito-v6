@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {AuthService} from './service/auth.service';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +9,11 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Cognito-D';
+
+  user$: Observable<any> = of(undefined);
+
+  constructor(private auth: AuthService) {
+    this.user$ = auth.currentUser$;
+  }
+
 }
