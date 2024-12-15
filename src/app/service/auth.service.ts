@@ -1,7 +1,6 @@
-import {Injectable} from '@angular/core';;
-import {BehaviorSubject} from 'rxjs';
-import { Amplify } from 'aws-amplify';
-import { getCurrentUser } from 'aws-amplify/auth';
+import {Injectable} from '@angular/core';
+import {from, Observable} from 'rxjs';
+import {fetchAuthSession, getCurrentUser} from 'aws-amplify/auth';
 
 export interface AuthToken {
   accessToken: string;
@@ -13,22 +12,19 @@ export interface AuthToken {
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<any>(null);
 
-  currentUser$ = this.currentUserSubject.asObservable();
+  currentUser$:Observable<any> = from(getCurrentUser().catch(_ => "Not Logged On"))
+  // TODO: add Store to save user; else has to reload;
 
   constructor() {
-    this.loadCurrentSession();
   }
 
-  private async loadCurrentSession(): Promise<void> {
-    try {
-      const user = await getCurrentUser();
-      this.currentUserSubject.next(user);
-    } catch (error) {
-      console.log(error);
-      this.currentUserSubject.next(null);
-    }
+
+  public async isAuth(): Promise<any> {
+    var cognitoTokens = (await fetchAuthSession()).tokens;
+    let rawToken = cognitoTokens?.idToken?.toString();
+    let payload = cognitoTokens?.idToken?.payload;
+    return rawToken;
   }
 
 }

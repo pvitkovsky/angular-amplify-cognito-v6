@@ -15,5 +15,6 @@ export class AppComponent {
   constructor(private auth: AuthService) {
     this.user$ = auth.currentUser$;
   }
+  // TODO: implement proper logout
 
 }
