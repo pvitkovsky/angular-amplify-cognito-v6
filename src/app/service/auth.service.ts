@@ -24,9 +24,7 @@ export class AuthService {
   private async loadCurrentSession(): Promise<void> {
     try {
       const user = await getCurrentUser();
-
       this.currentUserSubject.next(user);
-
     } catch (error) {
       console.log(error);
       this.currentUserSubject.next(null);
