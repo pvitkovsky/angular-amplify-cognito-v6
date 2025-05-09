@@ -12,13 +12,14 @@ export class AuthGuard implements CanActivate {
     private router: Router
   ) {}
 
-  canActivate(): Observable<boolean> {
-    return this.authService.authenticated$.pipe(tap(
-      (isAuthenticated: boolean) => {
-        if(!isAuthenticated){
-          this.router.navigate(["auth"])}
-        }
-
-    ))
+  canActivate(): Promise<boolean> {
+    return this.authService.getToken()
+      .then((token: string | undefined) => {
+          return token !== undefined;
+        },
+        _ => false)
+      .catch(_ => {
+        return false
+      })
   }
 }

@@ -11,17 +11,13 @@ import {BaseComponent} from './components/shared/BaseComponent';
 })
 export class AppComponent extends BaseComponent {
 
-  authenticated$: Observable<boolean> = of(false);
-  user$: Observable<any> = of(undefined);
-  token$: Observable<string | undefined> = of(undefined)
+  token: string | undefined;
 
   constructor(private auth: AuthService) {
     super();
-    this.user$ = auth.currentUser$;
-    this.authenticated$ = auth.authenticated$.pipe(shareReplay(1));
-    this.token$ = this.authenticated$.pipe(
-      filter(val=>val===true),
-      flatMap(_ => this.auth.getToken()));
+    this.auth.getToken().then(token => {
+      this.token = token;
+    })
   }
 
   onSignOut() {

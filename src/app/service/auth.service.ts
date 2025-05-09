@@ -15,23 +15,6 @@ export interface AuthToken {
 })
 export class AuthService {
 
-  public authenticated$: Observable<any> = new Observable<any>((subscriber) => {
-    const callback: AuthSubscriptionCallback = (authState) => {
-      subscriber.next(authState.authStatus === 'authenticated');
-    };
-    this.authenticator.subscribe(callback);
-  });
-
-  public currentUser$: Observable<any> = new Observable<any>((subscriber) => {
-    const callback: AuthSubscriptionCallback = (authState) => {
-      if(authState.authStatus !== "authenticated"){
-        subscriber.next("Not authenticated")
-      }
-      subscriber.next(authState.user);
-    };
-    this.authenticator.subscribe(callback);
-  });
-
   constructor(private authenticator: AuthenticatorService, private router: Router) {
   }
 
@@ -40,11 +23,12 @@ export class AuthService {
     this.router.navigate(["auth"])
   }
 
-  public async getToken(): Promise<any> { // TODO: JWTs are here;
-    var cognitoTokens = (await fetchAuthSession()).tokens;
-    let rawToken = cognitoTokens?.idToken?.toString();
-    let payload = cognitoTokens?.idToken?.payload;
-    return rawToken;
+  public async getToken(): Promise<string | undefined> {
+    const cognitoTokens = (await fetchAuthSession()).tokens;
+    if(!cognitoTokens || !cognitoTokens.idToken){
+      return undefined
+    }
+    return cognitoTokens.idToken.toString();
   }
 
 }
