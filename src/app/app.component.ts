@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {AuthService} from './service/auth.service';
-import {filter, flatMap, Observable, of, shareReplay} from 'rxjs';
 import {BaseComponent} from './components/shared/BaseComponent';
 
 @Component({

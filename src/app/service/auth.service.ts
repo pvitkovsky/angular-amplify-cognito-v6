@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {AuthenticatorService, AuthSubscriptionCallback} from '@aws-amplify/ui-angular';
+import {AuthenticatorService} from '@aws-amplify/ui-angular';
 import {Router} from '@angular/router';
-import { fetchAuthSession } from "aws-amplify/auth";
+import {fetchAuthSession} from "aws-amplify/auth";
 
 export interface AuthToken {
   accessToken: string;
